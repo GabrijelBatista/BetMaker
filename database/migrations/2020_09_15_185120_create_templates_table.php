@@ -16,8 +16,6 @@ class CreateTemplatesTable extends Migration
         Schema::create('templates', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('default_background');
-            $table->string('default_background2');
             $table->string('example')->nullable();
             $table->integer('max_matches');
             $table->timestamps();
