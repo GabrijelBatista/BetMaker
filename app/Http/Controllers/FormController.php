@@ -21,10 +21,7 @@ class FormController extends Controller
 
         $templates=Template::get()->all();
         $user = Auth::user();
-
         $ctemplate2['name']='Classic';
-        $ctemplate2['default_background']='bc_1600648784.jpg';
-        $ctemplate2['default_background2']='bc_2_1600648784.jpg';
         $ctemplate2['max_matches']=10;
         if(!Session::has('stg')){
             $resolution['width']="1200";
@@ -35,6 +32,8 @@ class FormController extends Controller
 
         $oldStg=Session::get('stg');
         $stg=new Stg($oldStg);
+
+
 
         if($stg->resolution===NULL){
             $resolution = new \stdClass();
@@ -47,8 +46,6 @@ class FormController extends Controller
         if($stg->ctemplate===NULL){
                 $ctemplate = new \stdClass();
                 $ctemplate->name='Classic';
-                $ctemplate->default_background='bc_1600648784.jpg';
-                $ctemplate->default_background2='bc_2_1600648784.jpg';
                 $ctemplate->max_matches= 10;
                 $stg->addctemplate($ctemplate);
                 $request->session()->put('stg', $stg);
@@ -70,11 +67,19 @@ class FormController extends Controller
         elseif($stg['ctemplate']['name']==='Special Match'){
             if(isset($stg['matches2'][0])){
                 $matches2=$stg['matches2'];
-                $m2=substr($stg['matches2'][0]['day'] , 0, 3);
+                if($matches2[0]['day']=="Četvrtak"){
+                    $m2=substr($matches2[0]['day'] , 0, 4);
+                }
+                else{
+                $m2=substr($stg['matches2'][0]['day'] , 0, 3);}
             }
             elseif(isset($stg['matches'][0])){
                 $matches2=$stg['matches'];
-                $m2=substr($stg['matches'][0]['day'] , 0, 3);
+                if($matches2[0]['day']=="Četvrtak"){
+                    $m2=substr($matches2[0]['day'] , 0, 4);
+                }
+                else{
+                $m2=substr($stg['matches'][0]['day'] , 0, 3);}
             }
             else{
                 $matches2=$stg['matches'];
@@ -93,7 +98,8 @@ class FormController extends Controller
 
     }
 
-    public function addpdf(Request $request){
+   /* 
+   public function addpdf(Request $request){
 
         $user = Auth::user();
 
@@ -112,6 +118,23 @@ class FormController extends Controller
     
         return redirect('/');
     }
+    */
+
+   /* public function fb(Request $request){
+
+        $user = Auth::user();
+
+        $data = $request->file('blob'); 
+
+        $image = explode('base64,',$data); 
+    
+        file_put_contents('../public/image/img.png', base64_decode($image[1]));
+
+        return [];
+
+}*/
+
+
 
     public function lang(Request $request){
 
@@ -136,14 +159,10 @@ class FormController extends Controller
         $filenameWithExt = $request->file('logo')->getClientOriginalName();
         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
         $extension = $request->file('logo')->getClientOriginalExtension();
-        $thumbStore = $filename.'_'.time().'.'.$extension;
+        $thumbStore = $user['id'].$user['email'].$filename.'_'.time().'.'.$extension;
         $thumb = Image::make($request->file('logo')->getRealPath());
         $thumb->resize(140, 140);
-        $path = '/public/images/'.$user['id'].$user['name'].'/teams';
-        if(!Storage::exists($path)) {
-            Storage::makeDirectory($path, $mode = 0777, true, true);
-        }
-        $thumb->save(public_path().'/storage/images/'.$user['id'].$user['name'].'/teams/'.$thumbStore);
+        $thumb->save(public_path().'/storage/images/teams/'.$thumbStore);
         $team->logo = $thumbStore;}
 
 
@@ -203,21 +222,16 @@ class FormController extends Controller
 
         $templates = Template::get()->all();
         $ctemplate = new \stdClass();
-        $ctemplate->name = $request->input('ctemplate'); 
-        $ctemplate->default_background = $request->input('default_background'); 
-        $ctemplate->default_background2= $request->input('default_background2');  
+        $ctemplate->name = $request->input('ctemplate');   
         $ctemplate->max_matches = $request->input('cmax');    
+
 
         $oldStg=Session::has('stg') ? Session::get('stg') : null;
         $stg = new Stg($oldStg);   
         $stg->ctemplate=NULL;
         $stg->addctemplate($ctemplate);
 
-        $cimage = new \stdClass();
-        $cimage->cimage = $request->input('default_background'); 
-        $cimage->cimage2 = $request->input('default_background2');    
-            $stg->cimage=NULL;
-            $stg->addcimage($cimage);
+       
 
             $request->session()->put('stg', $stg);
 
@@ -244,12 +258,12 @@ class FormController extends Controller
         $stg->resolution=NULL;
         $stg->addresolution($resolution);
         if($stg->cimage!=NULL){
-            if(file_exists((public_path().'/storage/images/'.$user['id'].$user['name'].'/backgrounds/'.$stg->cimage['cimage']))){
-            $imga = File::get(public_path().'/storage/images/'.$user['id'].$user['name'].'/backgrounds/'.$stg->cimage['cimage']);
+            if(file_exists((public_path().'/storage/images/backgrounds/'.$stg->cimage['cimage']))){
+            $imga = File::get(public_path().'/storage/images/backgrounds/'.$stg->cimage['cimage']);
             $img = Image::make($imga);
             $img->fit($resolution->width, $resolution->height);
-            unlink(public_path().'/storage/images/'.$user['id'].$user['name'].'/backgrounds/'.$stg->cimage['cimage2']);
-            $img->save(public_path().'/storage/images/'.$user['id'].$user['name'].'/backgrounds/'.$stg->cimage['cimage2']);
+            unlink(public_path().'/storage/images/backgrounds/'.$stg->cimage['cimage2']);
+            $img->save(public_path().'/storage/images/backgrounds/'.$stg->cimage['cimage2']);
         }
             else{
             $imga = File::get(public_path().'/storage/images/templates/'.$stg->cimage['cimage']);
@@ -291,9 +305,9 @@ class FormController extends Controller
         $filenameWithExt = $request->file('background_image')->getClientOriginalName();
         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
         $extension = $request->file('background_image')->getClientOriginalExtension();
-        $thumbStore = $filename.'_'.time().'.'.$extension;
-        $thumbStore2 = $filename.'_2_'.time().'.'.$extension;
-        $thumbStore3 = $filename.'_3_'.time().'.'.$extension;
+        $thumbStore = $user['id'].$user['email'].$filename.'_'.time().'.'.$extension;
+        $thumbStore2 = $user['id'].$user['email'].$filename.'_2_'.time().'.'.$extension;
+        $thumbStore3 = $user['id'].$user['email'].$filename.'_3_'.time().'.'.$extension;
         $thumb = Image::make($request->file('background_image')->getRealPath());
         $thumb2 = Image::make($request->file('background_image')->getRealPath());
         if($stg->resolution!=NULL){
@@ -334,12 +348,9 @@ class FormController extends Controller
             $thumb->pixelate(10);
             $thumb2->pixelate(10);
         }
-        $path = '/public/images/'.$user['id'].$user['name'].'/backgrounds';
-        if(!Storage::exists($path)) {
-            Storage::makeDirectory($path, $mode = 0777, true, true);
-        }
-        $thumb->save(public_path().'/storage/images/'.$user['id'].$user['name'].'/backgrounds/'.$thumbStore);
-        $thumb2->save(public_path().'/storage/images/'.$user['id'].$user['name'].'/backgrounds/'.$thumbStore2);
+
+        $thumb->save(public_path().'/storage/images/backgrounds/'.$thumbStore);
+        $thumb2->save(public_path().'/storage/images/backgrounds/'.$thumbStore2);
         
         
 
@@ -390,13 +401,9 @@ if($request->file('complogo')!=NULL){
         $filenameWithExt = $request->file('complogo')->getClientOriginalName();
         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
         $extension = $request->file('complogo')->getClientOriginalExtension();
-        $thumbStore = $filename.'_'.time().'.'.$extension;
+        $thumbStore = $user['id'].$user['email'].$filename.'_'.time().'.'.$extension;
         $thumb = Image::make($request->file('complogo')->getRealPath());
-        $path = '/public/images/'.$user['id'].$user['name'].'/competitions';
-        if(!Storage::exists($path)) {
-            Storage::makeDirectory($path, $mode = 0777, true, true);
-        }
-        $thumb->save(public_path().'/storage/images/'.$user['id'].$user['name'].'/competitions/'.$thumbStore);
+        $thumb->save(public_path().'/storage/images/competitions/'.$thumbStore);
         $competition->logo=$thumbStore;
     }
         
@@ -422,7 +429,6 @@ if($request->file('complogo')!=NULL){
 
         $this->validate($request, [
             'template_name'=>'required|max:25',
-            'default_background'=>'required|image',
             'max'=>'required|numeric',
         ]);
 
@@ -430,31 +436,8 @@ if($request->file('complogo')!=NULL){
         if($user->id===1 || $user->id===2){
         $templates=new Template;
 
-        $filenameWithExt = $request->file('default_background')->getClientOriginalName();
-        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        $extension = $request->file('default_background')->getClientOriginalExtension();
-        $thumbStore = $filename.'_'.time().'.'.$extension;
-        $thumbStore2 = $filename.'_2_'.time().'.'.$extension;
-        $thumb = Image::make($request->file('default_background')->getRealPath());
-        $thumb2 = Image::make($request->file('default_background')->getRealPath());
-        $oldStg=Session::has('stg') ? Session::get('stg') : null;
-        $stg = new Stg($oldStg);
-        if($stg->resolution!=NULL){
-        $thumb2->fit($stg->resolution['width'],$stg->resolution['height']);}
-        else{
-            $thumb2->fit(1920,1080);
-        }
-        $path = '/public/images/templates';
-        if(!Storage::exists($path)) {
-            Storage::makeDirectory($path, $mode = 0777, true, true);
-        }
-        $thumb->save(public_path().'/storage/images/templates/'.$thumbStore);
-        $thumb2->save(public_path().'/storage/images/templates/'.$thumbStore2);
-
         $templates->name=$request->input('template_name');
         $templates->max_matches=$request->input('max');
-        $templates->default_background=$thumbStore;
-        $templates->default_background2=$thumbStore2;
         
         $templates->save();}
        
@@ -670,9 +653,9 @@ if(App::getLocale()=='en'){
                 $arr=(array)$user->backgrounds;
                 unset($arr[$key]);
                 $user->backgrounds=(object)$arr;
-                $file_path=public_path().'/storage/images/'.$user['id'].$user['name'].'/backgrounds/'.$bi;
+                $file_path=public_path().'/storage/images/backgrounds/'.$bi;
                 unlink($file_path);
-                $file_path2=public_path().'/storage/images/'.$user['id'].$user['name'].'/backgrounds/'.$bi2;
+                $file_path2=public_path().'/storage/images/backgrounds/'.$bi2;
                 unlink($file_path2);
 
             }
@@ -703,9 +686,9 @@ if(App::getLocale()=='en'){
                 $arr=(array)$user->teams;
                 unset($arr[$key]);
                 $user->teams=(object)$arr;
-                $path = '/public/images/competitions/'.$ti;
+                $path = '/public/images/teams/'.$ti;
                 if(Storage::exists($path)) {
-                $file_path=public_path().'/storage/images/'.$user['id'].$user['name'].'/teams/'.$ti;
+                $file_path=public_path().'/storage/images/teams/'.$ti;
                 unlink($file_path);
             }}
         }
@@ -737,7 +720,7 @@ if(App::getLocale()=='en'){
                 $user->competitions=(object)$arr;
                 $path = '/public/images/competitions/'.$ci;
                 if(Storage::exists($path)) {
-                $file_path=public_path().'/storage/images/'.$user['id'].$user['name'].'/competitions/'.$ci;
+                $file_path=public_path().'/storage/images/competitions/'.$ci;
                 unlink($file_path);
             }
         }}
@@ -778,43 +761,6 @@ if(App::getLocale()=='en'){
         $name=$temp->name;
 
         $templates = Template::get()->all();
-
-        if($request->file('edefault')!=NULL){
-        foreach($templates as $template){
-            if($template->id===$id){
-                $tempi=$template->image;
-                $tempi2=$template->image2;
-            $file_path=public_path().'/storage/images/templates/'.$tempi;
-            unlink($file_path);
-            $file_path2=public_path().'/storage/images/templates/'.$tempi2;
-            unlink($file_path2);
-            }
-        }
-
-        $filenameWithExt = $request->file('edefault')->getClientOriginalName();
-        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        $extension = $request->file('edefault')->getClientOriginalExtension();
-        $thumbStore = $filename.'_'.time().'.'.$extension;
-        $thumbStore2 = $filename.'_2_'.time().'.'.$extension;
-        $thumb = Image::make($request->file('edefault')->getRealPath());
-        $thumb2 = Image::make($request->file('edefault')->getRealPath());
-        $oldStg=Session::has('stg') ? Session::get('stg') : null;
-        $stg = new Stg($oldStg);
-        if($stg->resolution!=NULL){
-        $thumb2->fit($stg->resolution['width'],$stg->resolution['height']);}
-        else{
-            $thumb2->fit(1920,1080);
-        }
-        $path = '/public/images/templates';
-        if(!Storage::exists($path)) {
-            Storage::makeDirectory($path, $mode = 0777, true, true);
-        }
-        $thumb->save(public_path().'/storage/images/templates/'.$thumbStore);
-        $thumb2->save(public_path().'/storage/images/templates/'.$thumbStore2);
-    
-        $temp->default_background=$thumbStore;
-        $temp->default_background2=$thumbStore2;
-    }
 
 
     if($request->file('eexample')!=NULL){      
