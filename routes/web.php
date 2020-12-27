@@ -36,13 +36,13 @@ Route::post('/addctemplate', 'FormController@addctemplate');
 Route::post('/addresolution', 'FormController@addresolution');
 Route::post('/addcompetition', 'FormController@addcompetition');
 Route::post('/addteam', 'FormController@addteam');
-Route::post('/addsport', 'FormController@addsport');
 Route::post('/addbackground', 'FormController@addbackground');
 Route::post('/addmatch', 'FormController@addmatch');
 Route::post('/filter', 'FormController@filter');
 Route::post('/filter2', 'FormController@filter2');
 Route::post('/lang', 'FormController@lang');
-Route::post('/addpdf', 'FormController@addpdf');
+//Route::post('/fb', 'FormController@fb')->name('fb');
+//Route::post('/addpdf', 'FormController@addpdf');
 });
 
 Auth::routes();
