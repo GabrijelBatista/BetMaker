@@ -36,7 +36,7 @@ public function addcimage($cimage){
 
 public function addctemplate($ctemplate){
 
-    $storedCtemplate = ['name'=>$ctemplate->name, 'default_background'=>$ctemplate->default_background, 'default_background2'=>$ctemplate->default_background2, 'max_matches'=>$ctemplate->max_matches];
+    $storedCtemplate = ['name'=>$ctemplate->name, 'max_matches'=>$ctemplate->max_matches];
     if($this->ctemplate){
             $storedCtemplate=$this->ctemplate;
     }
