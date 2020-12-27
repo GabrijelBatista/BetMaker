@@ -70,20 +70,6 @@
 </style>
 
 
-<div id="picture2" class="container" style="margin-top: 70px;font-family: fantasy; @if(isset($cimage)) background: url(storage/images/{{$user['id']}}{{$user['name']}}/backgrounds/{{$cimage['cimage']}}), url(storage/images/templates/{{$cimage['cimage']}}); @endif background-position: center; background-size:cover; width:500px; height:500px; box-shadow:-10px -10px 10px 10px darkslategray, 10px 10px 10px 10px darkslategray">
-    <form id="formaddbackground" action="{{ action('FormController@addpdf') }}" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <p><input type="file"  name="ppdf" class="pdf" id="pdf" ></p>
-    @if ($errors->has('ppdf')) <p><small class="help-block" style= " color:red;">{{ $errors->first('ppdf') }}</small></p> @endif
-    <button class="modalbtn" type="submit">Upload</button>
-    </form>
-</div>  
-    
-    
 
-    <div id="picture" class="container" style="font-family: fantasy;margin-left:100%; position:absolute; margin-top:100%; @if(isset($cimage)) background: url(storage/images/{{$user['id']}}{{$user['name']}}/backgrounds/{{$cimage['cimage']}}),url(storage/images/templates/{{$cimage['cimage2']}});@endif transform:scale({{$scale}}, {{$scale}}); background-position: center; background-size:cover; width:500px; height:500px">
-        <iframe src="storage/images/lang/sample.pdf" width="500px" height="500px" style="display:inline-block; position:relative">
-        </iframe>
-        </div>
     
 @endsection

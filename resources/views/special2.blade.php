@@ -83,7 +83,7 @@
 
 
 
-<div id="picture2" class="container" style="font-family: fantasy; @if(isset($cimage)) background: url(storage/images/{{$user['id']}}{{$user['name']}}/backgrounds/{{$cimage['cimage']}}), url(storage/images/templates/{{$cimage['cimage']}}); @endif background-position: center; background-size:cover; width:888.888889px; height:500px; box-shadow:-10px -10px 10px 10px darkslategray, 10px 10px 10px 10px darkslategray">
+<div id="picture2" class="container" style="font-family: fantasy; @if(isset($cimage)) background: url(storage/images/backgrounds/{{$cimage['cimage']}}); @endif background-position: center; background-size:cover; width:888.888889px; height:500px; box-shadow:-10px -10px 10px 10px darkslategray, 10px 10px 10px 10px darkslategray">
     <div class="container" style="min-width: 100%">
         @if(isset($matches2[0]))
             <div id="cvh" class="container" style="width:100%; padding-top:30px; max-height:90%;">
@@ -91,12 +91,12 @@
                         <p style="font-size:52px; color:white; width:100%; height:30%; text-align:center; padding:15px"> {{ __('text.matchoftheday') }} </p>
     
                         <div class="container" style="float: left; height:20%; width:100%; margin-bottom: 20px;margin-top: 20px">
-                            <img onerror="this.style.display='none'" src="storage/images/{{$user['id']}}{{$user['name']}}/teams/{{$matches2[0]['homelogo']}}" style="width: 15%; height: 60%; float:left">
-                            <div class="container" style="@if($matches2[0]['homelogo']===0 && $matches2[0]['awaylogo']===0) width:100%; @elseif($matches2[0]['homelogo']===0 || $matches2[0]['awaylogo']===0) width:80%; @else width: 60%; @endif float:left; height:75px; padding:5px">
+                            <img src="storage/images/teams/{{$matches2[0]['homelogo']}}" style="width: 15%; height: 60%; float:left">
+                            <div class="container" style="float:left; width: 70%; height:10%; padding:5px">
                                 <p style="font-size:36px; color:white;text-align:center; padding:0; margin-bottom:0; text-transform: uppercase;">{{$matches2[0]['hometeam']}}</p>
                                 <p style="font-size:36px; color:white;text-align:center; padding:0; text-transform: uppercase;">{{$matches2[0]['awayteam']}}</p>
                             </div>
-                            <img onerror="this.style.display='none'" src="storage/images/{{$user['id']}}{{$user['name']}}/teams/{{$matches2[0]['awaylogo']}}"  style="width: 15%; height: 60%; float:right">
+                            <img src="storage/images/teams/{{$matches2[0]['awaylogo']}}"  style="width: 15%; height: 60%; float:right">
                         </div>
     
                         <div class="row" style="font-size: 42px; width:100%"><b style="width:50%; margin-left:220px; margin-top:40px; margin-bottom:30px; background-color:orange; text-transform: uppercase"> {{$m2}}  {{$matches2[0]['time']}} </b></div>
@@ -111,7 +111,7 @@
     
 
 
-    <div id="picture" class="container" style="font-family: fantasy; margin-top:100%; margin-left:100%; position:absolute; @if(isset($cimage)) background: url(storage/images/{{$user['id']}}{{$user['name']}}/backgrounds/{{$cimage['cimage2']}}),url(storage/images/templates/{{$cimage['cimage2']}}) @endif background-position: center; background-size:cover; transform:scale({{$scale}}, {{$scale}}); width:888.888889px; height:500px">
+    <div id="picture" class="container" style="font-family: fantasy; margin-top:100%; margin-left:100%; position:absolute; @if(isset($cimage)) background: url(storage/images/backgrounds/{{$cimage['cimage2']}}); @endif background-position: center; background-size:cover; transform:scale({{$scale}}, {{$scale}}); width:888.888889px; height:500px">
         <div class="container" style="min-width: 100%">
             @if(isset($matches2[0]))
                 <div id="cvh" class="container" style="width:100%; padding-top:30px; max-height:90%;">
@@ -119,12 +119,12 @@
                             <p style="font-size:52px; color:white; width:100%; height:30%; text-align:center; padding:15px"> {{ __('text.matchoftheday') }} </p>
         
                             <div class="container" style="float: left; height:20%; width:100%; margin-bottom: 20px;margin-top: 20px">
-                                <img onerror="this.style.display='none'" src="storage/images/{{$user['id']}}{{$user['name']}}/teams/{{$matches2[0]['homelogo']}}" style="width: 15%; height: 60%; float:left">
-                                <div class="container" style="@if($matches2[0]['homelogo']===0 && $matches2[0]['awaylogo']===0) width:100%; @elseif($matches2[0]['homelogo']===0 || $matches2[0]['awaylogo']===0) width:80%; @else width: 60%; @endif float:left; height:75px; padding:5px">
+                                <img src="storage/images/teams/{{$matches2[0]['homelogo']}}" style="width: 15%; height: 60%; float:left">
+                                <div class="container" style="float:left; width: 70%; height:10%; padding:5px">
                                     <p style="font-size:36px; color:white;text-align:center; padding:0; margin-bottom:0; text-transform: uppercase;">{{$matches2[0]['hometeam']}}</p>
                                     <p style="font-size:36px; color:white;text-align:center; padding:0; text-transform: uppercase;">{{$matches2[0]['awayteam']}}</p>
                                 </div>
-                                <img onerror="this.style.display='none'" src="storage/images/{{$user['id']}}{{$user['name']}}/teams/{{$matches2[0]['awaylogo']}}"  style="width: 15%; height: 60%; float:right">
+                                <img src="storage/images/teams/{{$matches2[0]['awaylogo']}}"  style="width: 15%; height: 60%; float:right">
                             </div>
         
                             <div class="row" style="font-size: 42px; width:100%"><b style="width:50%; margin-left:220px; margin-top:40px; margin-bottom:30px; background-color:orange; text-transform: uppercase"> {{$m2}}  {{$matches2[0]['time']}} </b></div>

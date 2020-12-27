@@ -3,6 +3,7 @@
 
 
   <style>
+
     #conftext{
       font-size: 60px
     }
@@ -20,7 +21,10 @@
       border:1px white solid; color:white; border-radius:15px; background-color:darkslategray; margin-bottom:5px
     }
     #fmgrid{
-      align:center;display:grid; grid-template-columns: repeat(2, 1fr);overflow-x: hidden
+      display:grid; grid-template-columns: repeat(2, 1fr);overflow-x: hidden
+    }
+    #fmgrid2{
+      display:grid; grid-template-columns: repeat(2, 1fr);overflow-x: hidden
     }
     .nav-link, .nav-item{
       border:1px white solid; color:white; border-radius:15px; background-color:darkslategray; margin-bottom:5px
@@ -114,12 +118,35 @@ width:82vw;
     }
     #bb{
       width: 150px;
-      height:150px
+      height:150px;
+      margin-bottom: 7%; padding-top: 80%; color:white; 
     }
 
-
+    @media screen and (max-width: 910px) {
+      #resnav{
+        left:45%;
+      }
+    }
+    @media screen and (max-width: 830px) {
+      #resnav{
+        left:43%;
+      }
+    }
+    @media screen and (max-width: 800px) {
+      #resnav{
+        left:42%;
+      }
+    }
+    @media screen and (max-width: 800px) {
+      #resnav{
+        font-size: 80%
+      }
+    }
 
     @media screen and (max-width: 767px) {
+      #resnav{
+        font-size: 100%
+      }
       #btn22{
       font-size: 20px; width:20px
     }
@@ -174,6 +201,20 @@ width:82vw;
       display:inline-block;
     }
 }
+@media screen and (max-width: 500px) {
+  #fmgrid2{
+    grid-template-columns: none;
+  }
+  #bb{
+    padding-top: 0;
+  }
+}
+@media screen and (max-width: 230px) {
+  #bb{
+    width:100px;
+    height:100px;
+  }
+}
 @media screen and (max-height: 370px) {
   #asas2{
     zoom:80%
@@ -211,7 +252,7 @@ width:82vw;
   </style>
 
    
-  <div id="grayout" style="display: none;"></div>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -239,16 +280,17 @@ width:82vw;
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-
+  <link href="https://rawgit.com/select2/select2/4.0.5/dist/css/select2.min.css" rel="stylesheet">     
 </head>
 <body class="hold-transition sidebar-mini layout-relative;" style="background-color:rgb(129, 121, 121)">
-
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/hr_HR/sdk.js#xfbml=1&version=v9.0&appId=379553860008353&autoLogAppEvents=1" nonce="7HR0mkiV"></script>
 <div class="wrapper">
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-black navbar-dark" id="navmain">
-    <!-- Left navbar links -->
+  <nav class="main-header navbar navbar-expand navbar-black navbar-dark" id="navmain">  
+
+     <!-- Left navbar links -->
     <ul class="nav navbar-nav navbar-center">
       <button type="button" id="btn22" onclick="hidemenu()" class="btn">
         &#9776;
@@ -257,7 +299,7 @@ width:82vw;
         &#9776;
       </button>
     <li class="dropdown" id="fs">
-      <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+      <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-list nav-icon" style="margin-right:0.3vw"></i> {{ __('text.filtersort') }}
       </a>
 
@@ -271,7 +313,7 @@ width:82vw;
       </div>
   </li>
   <li class="dropdown" id="fs2">
-    <a id="likem2" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+    <a id="likem2" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       {{ __('text.filter') }}
     </a>
 
@@ -295,10 +337,20 @@ width:82vw;
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-    <button style="background-color:rgb(255, 255, 255); color:rgb(0, 0, 0); width:50px; margin-right:0.3vw" onclick="screenshot()"><i class="fas fa-camera"></i></button>
+      <li class="dropdown">
+        <a id="likem2" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-transform: uppercase">
+          <i class="fas fa-camera"></i>
+        </a>
+        <div id="likem" class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+    <a class="dropdown-item" href="#" onclick="screenshot()">
+      <img src="storage/images/share/download.png" style="margin-bottom:3px" alt=""> {{ __('text.download') }}</a>
+    <a class="dropdown-item" href="#" onclick="fb()">
+      <img src="storage/images/share/facebook.png" style="margin-bottom:3px" alt=""> {{ __('text.shareonfacebook') }}</a>
+        </div>
+      </li>
     <li class="dropdown">
-      <a id="likem2" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-transform: uppercase" v-pre>
-        <img src="storage/images/lang/{{App::getLocale()}}.png" style="margin-bottom:3px">
+      <a id="likem2" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-transform: uppercase">
+        <img src="storage/images/lang/{{App::getLocale()}}.png" style="margin-bottom:3px" alt="">
           {{App::getLocale()}}
       </a>
 
@@ -307,7 +359,7 @@ width:82vw;
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <input type="hidden" name="lang" value="en">
           <a class="dropdown-item" href="#" onclick="$(this).closest('form').submit()">
-            <img src="storage/images/lang/en.png" style="margin-bottom:3px">
+            <img src="storage/images/lang/en.png" style="margin-bottom:3px" alt="">
               EN
           </a>
         </form>
@@ -315,7 +367,7 @@ width:82vw;
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <input type="hidden" name="lang" value="hr">
         <a class="dropdown-item" href="#" onclick="$(this).closest('form').submit()">
-          <img src="storage/images/lang/hr.png" style="margin-bottom:3px">
+          <img src="storage/images/lang/hr.png" style="margin-bottom:3px" alt="">
            HR
        </a>
         </form>
@@ -323,7 +375,7 @@ width:82vw;
   </li>
     @guest
     <li class="dropdown" id="loglog">
-      <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+      <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{ __('text.myaccount') }}
       </a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" id="likem">
@@ -333,7 +385,7 @@ width:82vw;
     </li>
 @else
     <li class="dropdown" id="loglog">
-        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{ Auth::user()->name }}
         </a>
 
@@ -356,32 +408,20 @@ width:82vw;
 
   <!-- Backgrounds List Modal -->
 
-<div class="modal fade" id="backgroundslistModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="backgroundslistModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div id="mc" class="modal-content">
       <div class="modal-header">
         <b> {{ __('text.backgrounds') }} </b>
       </div>
       <div id="fmgrid" class="modal-body">
-        <div class="form-group" style="margin-left:40px">
-      <form id="formaddmatch" action="{{ action('FormController@addcimage') }}" method="POST">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        @isset($ctemplate)
-        <input type="hidden" name="cimage" value="{{$ctemplate['default_background']}}">
-        <input type="hidden" name="cimage2" value="{{$ctemplate['default_background2']}}">
-        <button id="bb" type="submit" style="background: url(storage/images/templates/{{$ctemplate['default_background']}}); background-position: center; background-size:cover;">
-          <div style="color:white">Default</div>
-        </button>
-        @endisset
-      </form>
-        </div>
       @isset($backgrounds)
       @foreach($backgrounds as $background)
       <div class="form-group" style="margin-left:40px">
         <form id="formaddmatch" action="{{ action('FormController@addcimage') }}" method="POST">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <input type="hidden" name="cimage" value="{{ $background['image'] }}">
-          <button id="bb" type="submit" style="color:white; text-align:center; background: url(storage/images/{{$user['id']}}{{$user['name']}}/backgrounds/{{$background['image']}}); background-size:cover">{{ $background['name'] }}</button>
+          <button id="bb" type="submit" style="color:white; text-align:center; background: url(storage/images/backgrounds/{{$background['image']}}); background-size:cover">{{ $background['name'] }}</button>
         </form>
         <form id="formremoveone" method="POST" action="{{ action('FormController@deleteoneb') }}" enctype="multipart/form-data">
           <input type="hidden" name="bn" value="{{ $background['name']}}">
@@ -412,27 +452,25 @@ width:82vw;
 
   <!-- Choose template Modal -->
 
-<div class="modal fade" id="choosetemplateModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="choosetemplateModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div id="mc" class="modal-content">
       <div class="modal-header">
         <b> {{ __('text.choosetemplate') }} </b>
       </div>
-      <div class="modal-body" id=fmgrid>
+      <div class="modal-body" id=fmgrid2>
       @isset($templates)
       @foreach($templates as $template)
       <div class="form-group" style="margin-left:40px">
         <form id="formaddmatch" action="{{ action('FormController@addctemplate') }}" method="POST">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <input type="hidden" name="ctemplate" value="{{ $template['name'] }}">
-          <input type="hidden" name="default_background" value="{{ $template['default_background'] }}">
-          <input type="hidden" name="default_background2" value="{{ $template['default_background2'] }}">
           <input type="hidden" name="cmax" value="{{ $template['max_matches'] }}">
-          <button id="bb" type="submit" style="color:white; background: url(storage/images/templates/examples/{{$template['example']}}); background-position: center; background-size:cover;float:left; color:rgb(27, 26, 26); text-align:center">{{ $template['name'] }}</button>
+          <button id="bb" type="submit" style="background: url(storage/images/templates/examples/{{$template['example']}}); background-position: center; background-size:cover;float:left; color:rgb(27, 26, 26); text-align:center"><b id="bbins" style="background-color: rgba(17, 63, 57, 0.658); color:white">{{ $template['name'] }}</b></button>
         </form> 
         @if(Auth::check())
         @if(auth()->user()->superadmin == true)
-        <div class="modal fade" id="edit{{$template['id']}}" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="edit{{$template['id']}}" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered">
             <div id="mc" class="modal-content">
               <div class="modal-header">
@@ -442,13 +480,11 @@ width:82vw;
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="tempid" value="{{$template['id']}}">
               <div class="modal-body">
-                <label for="formGroupExampleInput">{{ __('text.name') }}:</label>
+                <label>{{ __('text.name') }}:</label>
                 <input type="text"  class="form-control name_c" id="name" name="ename" placeholder="{{ __('text.name') }}">
-                <label for="formGroupExampleInput">{{ __('text.maximumnumberofmatches') }}:</label>
+                <label>{{ __('text.maximumnumberofmatches') }}:</label>
                 <input type="text"  class="form-control name_c" id="name" name="emax" placeholder="{{ __('text.maximumnumberofmatches') }}">
-                <label id="ci" for="formGroupExampleInput3">{{ __('text.adddefaultbackground') }}:</label>
-                <p><input type="file"  name="edefault" class="edefault" id="default_background" ></p>
-                <label id="ci" for="formGroupExampleInput3">{{ __('text.addexampleimage') }}:</label>
+                <label id="ci">{{ __('text.addexampleimage') }}:</label>
                 <p><input type="file"  name="eexample" class="edefault" id="default_background" ></p>
               </div>
               <div class="modal-footer">
@@ -494,7 +530,7 @@ width:82vw;
 
    <!-- Competitions List Modal -->
 
-<div class="modal fade" id="competitionslistModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="competitionslistModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div id="mc" class="modal-content">
       <div class="modal-header">
@@ -504,8 +540,8 @@ width:82vw;
         <ul class="nav nav-treeview">
       @isset($competitions)
           @foreach($competitions as $competition)
-          @isset($competition['logo'])<img id="imagetm" src="storage/images/{{$user['id']}}{{$user['name']}}/competitions/{{$competition['logo']}}" style="margin-bottom:5px; margin-right:0.2vw; float:left; width: 30px; height:30px">@endisset
-            <li class="nav-item" style="margin-bottom:0.2vw; color:rgb(255, 255, 255); width:88%; height: 30px; float:left; padding:0.2vw">{{$competition['name']}}</li>
+          @isset($competition['logo'])<img id="imagetm" src="storage/images/competitions/{{$competition['logo']}}" style="margin-bottom:5px; margin-right:0.2vw; float:left; width: 30px; height:30px" alt="">@endisset
+          <li class="nav-item" style="margin-bottom:5px; color:rgb(255, 255, 255); width:88%; height: 30px; float:left; padding:2px">{{$competition['name']}}</li>
               <form id="formremoveone" method="POST" action="{{ action('FormController@deleteonec') }}" enctype="multipart/form-data">
                 <input type="hidden" name="cn" value="{{ $competition['name']}}">
                 @isset($competition['logo'])<input type="hidden" name="ci" value="{{ $competition['logo']}}">@endisset
@@ -518,7 +554,7 @@ width:82vw;
               </form> 
           @endforeach
           @endisset
-      </ul></li>
+      </ul>
       </div>
       <div class="modal-footer">
         @isset($competitions)
@@ -536,7 +572,7 @@ width:82vw;
 
   <!-- Teams List Modal -->
 
-<div class="modal fade" id="teamslistModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="teamslistModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div id="mc" class="modal-content">
       <div class="modal-header">
@@ -546,7 +582,7 @@ width:82vw;
         <ul class="nav nav-treeview">
       @isset($teams)
           @foreach($teams as $team)
-          @isset($team['logo'])<img id="imagetm" src="storage/images/{{$user['id']}}{{$user['name']}}/teams/{{$team['logo']}}" style="margin-bottom:5px; margin-right:0.2vw; float:left; width: 30px; height:30px">@endisset
+          @isset($team['logo'])<img id="imagetm" src="storage/images/teams/{{$team['logo']}}" style="margin-bottom:5px; margin-right:0.2vw; float:left; width: 30px; height:30px" alt="">@endisset
           <li class="nav-item" style="margin-bottom:5px; color:rgb(255, 255, 255); width:88%; height: 30px; float:left; padding:2px">{{$team['name']}}</li>
               <form id="formremoveone" method="POST" action="{{ action('FormController@deleteonet') }}" enctype="multipart/form-data">
                 <input type="hidden" name="tn" value="{{ $team['name']}}">
@@ -578,7 +614,7 @@ width:82vw;
 
     <!-- Matches List Modal -->
 
-<div class="modal fade" id="matcheslistModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="matcheslistModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div id="mc" class="modal-content">
       <div class="modal-header">
@@ -600,7 +636,7 @@ width:82vw;
               </form>  
           @endforeach          
           @endisset
-        </ul></li>
+        </ul>
       </div>
       <div class="modal-footer">
         @isset($matches)
@@ -619,7 +655,7 @@ width:82vw;
 
 <!-- Confirm Modal -->
 
-<div class="modal fade" id="confirmModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div id="mc" class="modal-content">
       <form id="formconfirm" action="{{ action('FormController@deleteall') }}">
@@ -637,7 +673,7 @@ width:82vw;
 
   <!-- Confirm Modal2 -->
 
-<div class="modal fade" id="confirmModal2" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmModal2" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div id="mc" class="modal-content">
       <form id="formconfirm" action="{{ action('FormController@deleteallt') }}">
@@ -655,7 +691,7 @@ width:82vw;
 
   <!-- Confirm Modal3 -->
 
-<div class="modal fade" id="confirmModal3" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmModal3" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div id="mc" class="modal-content">
       <form id="formconfirm" action="{{ action('FormController@deleteallc') }}">
@@ -675,7 +711,7 @@ width:82vw;
 
   <!-- Add Resolution Modal -->
 
-  <div class="modal fade" id="resolutionModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="resolutionModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div id="mc" class="modal-content">
         <div class="modal-header">
@@ -723,20 +759,20 @@ width:82vw;
 
     <!-- Add Competition Modal -->
 
-  <div class="modal fade" id="competitionModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="competitionModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div id="mc" class="modal-content">
         <div class="modal-header">
-            <li class="nav-item d-none d-sm-inline-block">{{ __('text.addnewcompetition') }}</li>
+            <b class="nav-item d-none d-sm-inline-block">{{ __('text.addnewcompetition') }}</b>
         </div>
         <form id="formaddcompetition" action="{{ action('FormController@addcompetition') }}" method="POST" enctype="multipart/form-data">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="modal-body">
-          <label for="formGroupExampleInput">{{ __('text.name') }}:</label>
+          <label>{{ __('text.name') }}:</label>
           <input type="text"  class="form-control name_c" id="name" name="competition_name" placeholder="{{ __('text.name') }}">
           @if ($errors->has('competition_name')) <p><small class="help-block" style= " color:red;">{{ $errors->first('competition_name') }}</small></p> @endif
           @if(\Session::has('err3')) <p><small class="help-block" style= " color:red;">{{\Session::get('err3')}}</small></p> @endif
-          <label id="ci" for="formGroupExampleInput3">{{ __('text.choosecompetitionlogo') }}:</label>
+          <label id="ci">{{ __('text.choosecompetitionlogo') }}:</label> <p style="font-size: 12px; color:green">*{{ __('text.optional') }}</p>
           <p><input type="file"  name="complogo" class="default_background" id="default_background" ></p>
         </div>
         <div class="modal-footer">
@@ -750,26 +786,21 @@ width:82vw;
 
     <!-- Add Template Modal -->
 
-  <div class="modal fade" id="templateModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="templateModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div id="mc" class="modal-content">
         <div class="modal-header">
-            <li class="nav-item d-none d-sm-inline-block">{{ __('text.addnewtemplate') }}</li>
+            <b class="nav-item d-none d-sm-inline-block">{{ __('text.addnewtemplate') }}</b>
         </div>
         <form id="formaddcompetition" action="{{ action('FormController@addtemplate') }}" method="POST" enctype="multipart/form-data">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="modal-body">
-          <label for="formGroupExampleInput">{{ __('text.name') }}:</label>
+          <label>{{ __('text.name') }}:</label>
           <input type="text"  class="form-control name_c" id="name" name="template_name" placeholder="{{ __('text.name') }}">
           @if ($errors->has('template_name')) <p><small class="help-block" style= " color:red;">{{ $errors->first('template_name') }}</small></p> @endif
-          <label for="formGroupExampleInput">{{ __('text.maximumnumberofmatches') }}:</label>
+          <label>{{ __('text.maximumnumberofmatches') }}:</label>
           <input type="text"  class="form-control name_c" id="name" name="max" placeholder="{{ __('text.maximumnumberofmatches') }}">
-          @if ($errors->has('max')) <p><small class="help-block" style= " color:red;">{{ $errors->first('max') }}</small></p> @endif
-          <label id="ci" for="formGroupExampleInput3">{{ __('text.adddefaultbackground') }}:</label>
-          <p><input type="file"  name="default_background" class="default_background" id="default_background" ></p>
-           @if ($errors->has('default_background')) <p><small class="help-block" style= " color:red;">{{ $errors->first('default_background') }}</small></p> @endif
-         
-          
+          @if ($errors->has('max')) <p><small class="help-block" style= " color:red;">{{ $errors->first('max') }}</small></p> @endif        
         </div>
         <div class="modal-footer">
           <button type="submit" id="modalb" class="btn btn-bbb">{{ __('text.addtemplate') }}</button>
@@ -782,7 +813,7 @@ width:82vw;
 
     <!--Filter Modal 2-->
 
-  <div class="modal fade" id="filterModal2" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="filterModal2" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div id="mc" class="modal-content">
         <div class="modal-header">
@@ -793,7 +824,7 @@ width:82vw;
         <div class="modal-body">
 
           <div class="form-group">
-            <label id="category" for="formGroupExampleInput3">{{ __('text.sortby') }}:</label>
+            <label id="category">{{ __('text.sortby') }}:</label>
             <select name="sort" id="sc" >
               <option id="choose" value="">{{ __('text.sortby') }}</option>
               <option value="scompetition">{{ __('text.competition') }}</option>
@@ -801,10 +832,10 @@ width:82vw;
               <option value="shome">{{ __('text.hometeam') }}</option>
               <option value="saway">{{ __('text.awayteam') }}</option>
             </select>
-          </div></p></div>
+          </div></div>
         <div class="container">
           <div class="form-group">
-        <p style="height: 1vw"><label for="formGroupExampleInput">{{ __('text.choosematches') }}:</label></p>
+        <p style="height: 1vw"><label>{{ __('text.choosematches') }}:</label></p>
         <p>
           <div class="container" style="width:100%; max-height: 150px; border: 1px solid white; overflow-y:scroll;">
           @isset($matches)
@@ -814,9 +845,9 @@ width:82vw;
         </p>
           @endforeach
           @endisset
-          </div></p>
           </div>
-
+          </div>
+        
         </div>
         <div class="modal-footer">
           <button type="submit" id="modalb" class="btn btn-bbb">{{ __('text.submit') }}</button>
@@ -829,21 +860,21 @@ width:82vw;
 
      <!-- Add Background Image Modal -->
 
-  <div class="modal fade" id="backgroundModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="backgroundModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div id="mc" class="modal-content">
         <div class="modal-header">
-            <li class="nav-item d-none d-sm-inline-block">{{ __('text.addnewbackgroundimage') }}</li>
+            <b class="nav-item d-none d-sm-inline-block">{{ __('text.addnewbackgroundimage') }}</b>
         </div>
         <form id="formaddbackground" action="{{ action('FormController@addbackground') }}" method="POST" enctype="multipart/form-data">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div id="mbc" class="modal-body">
-          <label for="formGroupExampleInput">{{ __('text.name') }}:</label>
+          <label>{{ __('text.name') }}:</label>
           <input type="text"  class="form-control name_c" id="background_name" name="background_name" placeholder="{{ __('text.name') }}">
           @if ($errors->has('background_name')) <p><small class="help-block" style= " color:red;">{{ $errors->first('background_name') }}</small></p> @endif
           @if(\Session::has('err')) <p><small class="help-block" style= " color:red;">{{\Session::get('err')}}</small></p> @endif
           <div id="inp" class="form-group">
-            <label id="ci" for="formGroupExampleInput3">{{ __('text.choosebackgroundimage') }}:</label>
+            <label id="ci">{{ __('text.choosebackgroundimage') }}:</label>
             <p><input type="file"  name="background_image" class="background_image" id="background_image" ></p>
              @if ($errors->has('background_image')) <p><small class="help-block" style= " color:red;">{{ $errors->first('background_image') }}</small></p> @endif
           </div>
@@ -857,7 +888,7 @@ width:82vw;
             <option value="invert">Invert</option>
             <option value="pixelate">Pixelate</option>
             <option value="sharpen">Sharpen</option>
-          </select> <b style="font-size: 12px;">*{{ __('text.optional') }}</b>
+          </select> <b style="font-size: 12px; color:green">*{{ __('text.optional') }}</b>
         </div>
         <div class="modal-footer">
           <button type="submit" id="modalb" class="btn btn-bbb">{{ __('text.addbackground') }}</button>
@@ -870,7 +901,7 @@ width:82vw;
 
     <!-- Filter Modal -->
 
-  <div class="modal fade" id="filterModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="filterModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div id="fm" class="modal-content">
         <div class="modal-header">
@@ -882,17 +913,17 @@ width:82vw;
           <div class="modal-body" id="fmgrid">
           <div class="container" style="float:left"><p>
             <div class="form-group" style="border-bottom: 0.2vw solid black">
-            <label id="category" for="formGroupExampleInput3">{{ __('text.from') }}:</label>
+            <label id="category">{{ __('text.from') }}:</label>
             <input type="text" id="datepicker2" autocomplete="off">
             <input type="hidden" id="alt_date2" name="datesend" value="">
           </div>
             <div id ="roll" class="form-group" style="border-bottom: 0.2vw solid black">
-              <label id="category" for="formGroupExampleInput3">{{ __('text.to') }}:</label>                     
+              <label id="category">{{ __('text.to') }}:</label>                     
               <input type="text" id="datepicker3" autocomplete="off">
               <input type="hidden" id="alt_date3" name="datesend2" value="">
             </div>
               <div class="form-group">
-              <label id="category" for="formGroupExampleInput3">{{ __('text.sortby') }}:</label>
+              <label id="category">{{ __('text.sortby') }}:</label>
               <select name="sort" id="sc" >
                 <option id="choose" value="">{{ __('text.sortby') }}</option>
                 <option value="scompetition">{{ __('text.competition') }}</option>
@@ -903,7 +934,7 @@ width:82vw;
             </div></p></div>
           <div id="filterchoices"class="container" style="border-left: 0.2vw solid black">
             <div class="form-group">
-          <p style="height: 1vw"><label for="formGroupExampleInput">{{ __('text.choosecompetitions') }}:</label></p>
+          <p style="height: 1vw"><label>{{ __('text.choosecompetitions') }}:</label></p>
           <p>
               <div class="container" style="width:100%; max-height: 50px; border: 1px solid white; overflow-y:scroll;">
             @isset($competitions)
@@ -916,7 +947,7 @@ width:82vw;
           </div></p>
             </div>
             <div class="form-group">
-          <p style="height: 1vw"><label for="formGroupExampleInput">{{ __('text.choosehometeams') }}:</label></p>
+          <p style="height: 1vw"><label>{{ __('text.choosehometeams') }}:</label></p>
           <p>
             <div class="container" style="width:100%; max-height: 50px; border: 1px solid white; overflow-y:scroll;">
           @isset($teams)
@@ -929,7 +960,7 @@ width:82vw;
         </div></p>
             </div>
             <div class="form-group">
-          <p style="height: 1vw"><label for="formGroupExampleInput">{{ __('text.chooseawayteams') }}:</label></p>
+          <p style="height: 1vw"><label>{{ __('text.chooseawayteams') }}:</label></p>
           <p>
             <div class="container" style="width:100%; max-height: 50px; border: 1px solid white; overflow-y:scroll;">
           @isset($teams)
@@ -953,22 +984,22 @@ width:82vw;
 
     <!-- Add team Modal -->
 
-  <div class="modal fade" id="teamModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="teamModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div id="mc" class="modal-content">
         <div class="modal-header">
-            <li class="nav-item d-none d-sm-inline-block">{{ __('text.addnewteam') }}</li>
+            <b class="nav-item d-none d-sm-inline-block">{{ __('text.addnewteam') }}</b>
         </div>
         <form id="formaddteam" action="{{ action('FormController@addteam') }}" method="POST" enctype="multipart/form-data">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="modal-body">
-          <label for="formGroupExampleInput">{{ __('text.name') }}:</label>
+          <label>{{ __('text.name') }}:</label>
           <input type="text"  class="form-control name_c" id="name" name="team_name" placeholder="{{ __('text.name') }}">
           @if ($errors->has('team_name')) <p><small class="help-block" style= " color:red;">{{ $errors->first('team_name') }}</small></p> @endif
           @if(\Session::has('err2')) <p><small class="help-block" style= " color:red;">{{\Session::get('err2')}}</small></p> @endif
         </div>
         <div id="inp" class="form-group">
-          <label id="ci" for="formGroupExampleInput3">{{ __('text.chooseteamlogo') }}:</label>
+          <label id="ci">{{ __('text.chooseteamlogo') }}:</label> <p style="font-size: 12px; color:green">*{{ __('text.optional') }}</p>
           <p><input type="file"  name="logo" class="logo" id="logo" ></p>
         </div>
         <div class="modal-footer">
@@ -982,18 +1013,18 @@ width:82vw;
 
 
     <!-- Add match Modal -->
-  <div class="modal fade" id="matchModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="matchModal" tabindex="-1" data-backdrop="false" data-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div id="mc" class="modal-content">
         <div class="modal-header">
-            <li class="nav-item d-none d-sm-inline-block">{{ __('text.addnewmatch') }}</li>
+            <b class="nav-item d-none d-sm-inline-block">{{ __('text.addnewmatch') }}</b>
         </div>
         <form id="formaddmatch" action="{{ action('FormController@addmatch') }}" method="POST" enctype="multipart/form-data">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="modal-body">
           <div id ="roll" class="form-group">
-            <label id="category" for="formGroupExampleInput3">{{ __('text.choosehometeam') }}:</label>
-            <select name="home_team" id="sc" >
+            <label id="category">{{ __('text.choosehometeam') }}:</label>
+            <select name="home_team" id="sc" class="js-example-basic-single">
               <option id="choose" value="">{{ __('text.choosehometeam') }}</option>
               @isset($teams)
               @foreach($teams as $team)
@@ -1004,8 +1035,8 @@ width:82vw;
             @if ($errors->has('home_team')) <p><small class="help-block" style= " color:red;">{{ $errors->first('home_team') }}</small></p> @endif
           </div>
           <div id ="roll" class="form-group">
-            <label id="category" for="formGroupExampleInput3">{{ __('text.chooseawayteam') }}:</label>
-            <select name="away_team" id="sc" >
+            <label id="category">{{ __('text.chooseawayteam') }}:</label>
+            <select name="away_team" id="sc" class="js-example-basic-single">
               <option id="choose" value="">{{ __('text.chooseawayteam') }}</option>
               @isset($teams)
               @foreach($teams as $team)
@@ -1016,8 +1047,8 @@ width:82vw;
             @if ($errors->has('away_team')) <p><small class="help-block" style= " color:red;">{{ $errors->first('away_team') }}</small></p> @endif
           </div>
           <div id ="roll" class="form-group">
-            <label id="category" for="formGroupExampleInput3">{{ __('text.choosecompetition') }}:</label>
-            <select name="competition" id="sc" >
+            <label id="category">{{ __('text.choosecompetition') }}:</label>
+            <select name="competition" id="sc" class="js-example-basic-single">
               <option id="choose" value="">{{ __('text.choosecompetition') }}</option>
               @isset($competitions)
               @foreach($competitions as $competition)
@@ -1028,14 +1059,14 @@ width:82vw;
             @if ($errors->has('competition')) <p><small class="help-block" style= " color:red;">{{ $errors->first('competition') }}</small></p> @endif
           </div>
           <div id ="roll" class="form-group">
-            <label id="category" for="formGroupExampleInput3">{{ __('text.date') }}:</label>
+            <label id="category">{{ __('text.date') }}:</label>
             <input type="text" id="datepicker" autocomplete="off" placeholder="{{ __('text.date') }}">
             <input type="hidden" id="alt_date" name="date" value="">
             @if ($errors->has('date')) <p><small class="help-block" style= " color:red;">{{ $errors->first('date') }}</small></p> @endif
           </div>
           <div id="inp" class="form-group">
-            <label for="formGroupExampleInput">{{ __('text.time') }}:</label>
-            <input type="time" class="timepicker" id="time" name="time" autocomplete="off" placeholder="{{ __('text.time') }}">
+            <label>{{ __('text.time') }}:</label>
+            <input type="time" class="timepicker" id="time" name="time" autocomplete="off">
             @if ($errors->has('time')) <p><small class="help-block" style= " color:red;">{{ $errors->first('time') }}</small></p> @endif
           </div>
         </div>
@@ -1102,7 +1133,7 @@ width:82vw;
     </a>   
 
       <!-- Sidebar Menu -->
-      
+      @if(Auth::check()) <img src="/image/{{Auth::user()->id}}{{ Auth::user()->email }}.png" id="imgfb" style="display:none"/> @endif
         <ul class="nav nav-sidebar flex-column" id="rolemenu" data-widget="treeview" role="menu" data-accordion="false" style="font-size: 1.5vw; margin-top: 30px"> 
           <a href="#" data-toggle="modal" data-target="#choosetemplateModal" class="nav-link">
             {{ __('text.templates!') }}
@@ -1131,7 +1162,6 @@ width:82vw;
     @yield('content')
     </div>
   </div>
-
 
 
 <script src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
@@ -1170,12 +1200,20 @@ width:82vw;
 <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('dist/js/demo.js') }}"></script>
+<script src="https://rawgit.com/select2/select2/4.0.5/dist/js/select2.full.min.js"></script>
 
 @if(App::getLocale()=='hr')
  <script src="{{ asset('dist/js/datepicker-hr.js') }}"></script> 
 @endif
 
+<script>
+  $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});
+</script>
+
 </body>
+
 
 <script>
   $("#btn22").hide();
@@ -1280,6 +1318,40 @@ height: h
   $("#picture").hide();
 })};
 </script>
+
+<script language="javascript">
+  function fb(){
+    var id = "<?php echo $user['id'] ?>";
+    var email = "<?php echo $user['email'] ?>";
+    var w= <?php echo $resolution['width'] ;?>;
+    var h= <?php echo $resolution['height'] ;?>;
+     $("#picture").show();
+html2canvas($('#picture'), {
+width: w,
+height: h
+}).then(function(canvas) {
+  var imgData = canvas.toDataURL('image/png');   
+
+
+
+    var url = 'export.php';
+        $.ajax({ 
+            type: "POST", 
+            url: url,
+            dataType: 'text',
+            data: {
+                base64data : imgData,
+                userid : id,
+                useremail : email
+            } 
+}); 
+var imgsrc=document.getElementById("imgfb").src;
+  var fbpopup = window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(imgsrc), "pop", "width=600, height=400, scrollbars=no");
+  return false;
+})}
+</script>
+
+
 @endisset
 @if(\Session::has('err'))
 <script>
